@@ -4,28 +4,6 @@ _tomcat_validate_certs:
   default: yes
   CentOS-6: no
 
-_tomcat_jmespath_packages:
-  default:
-    - python-jmespath
-  Alpine:
-    - py-jmespath
-  CentOS:
-    - python2-jmespath
-  RedHat:
-    - python2-jmespath
-  ArchLinux:
-    - python-jmespath
-  Debian:
-    - python-jmespath
-  Fedora:
-    - python2-jmespath
-  OpenSuse:
-    - python2-jmespath
-  Ubuntu:
-    - python-jmespath
-
-tomcat_jmespath_packages: "{{ _tomcat_jmespath_packages[ansible_distribution] | default(_tomcat_jmespath_packages['default']) }}"
-
 tomcat_github_json_query: "[?starts_with(name, '{{ instance.version | default(tomcat_version) }}.') && !contains(name, -)]"
 
 tomcat_validate_certs: "{{ _tomcat_validate_certs[ansible_distribution ~ '-' ~ ansible_distribution_major_version] | default(_tomcat_validate_certs['default']) }}"

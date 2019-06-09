@@ -19,11 +19,6 @@
     owner: "{{ instance.user | default(tomcat_user) }}"
     group: "{{ instance.group | default(tomcat_group) }}"
 
-- name: ensure jmespath is installed
-  package:
-    name: "{{ tomcat_jmespath_packages }}"
-    state: present
-
 - name: get tags from github
   uri:
     url: https://api.github.com/repos/apache/tomcat/tags?by_page=500
