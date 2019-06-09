@@ -19,6 +19,11 @@
     owner: "{{ instance.user | default(tomcat_user) }}"
     group: "{{ instance.group | default(tomcat_group) }}"
 
+- name: ensure jmespath is installed
+  package:
+    name: "{{ tomcat_jmespath_packages }}"
+    state: present
+
 - name: get tags from github
   uri:
     url: https://api.github.com/repos/apache/tomcat/tags?by_page=500
@@ -39,8 +44,8 @@
     mode: 0440
     validate_certs: "{{ tomcat_validate_certs }}"
   with_items:
-    - targz: apache-tomcat-{{ tomcat_github_version }}.tar.gz
-      url_path: dist/tomcat/tomcat-{{ instance.version | default(tomcat_version) }}/v{{ tomcat_github_version }}/bin
+    - targz: "apache-tomcat-{{ tomcat_github_version }}.tar.gz"
+      url_path: "dist/tomcat/tomcat-{{ instance.version | default(tomcat_version) }}/v{{ tomcat_github_version }}/bin"
   loop_control:
     loop_var: tomcat_mirror_dist
 
