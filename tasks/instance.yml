@@ -34,10 +34,15 @@
 
 - name: download tomcat source
   get_url:
-    url: "{{ tomcat_mirror }}/dist/tomcat/tomcat-{{ instance.version | default(tomcat_version) }}/v{{ tomacat_github_version }}/bin/apache-tomcat-{{ tomacat_github_version }}.tar.gz"
+    url: "{{ tomcat_mirror }}/{{ tomcat_mirror_dist.url_path }}/{{ tomcat_mirror_dist.targz }}"
     dest: "{{ tomcat_directory }}/{{ instance.name }}/tomcat_src.tar.gz"
     mode: 0440
     validate_certs: "{{ tomcat_validate_certs }}"
+  with_items:
+    - targz: apache-tomcat-{{ tomcat_github_version }}.tar.gz
+      url_path: dist/tomcat/tomcat-{{ instance.version | default(tomcat_version) }}/v{{ tomcat_github_version }}/bin
+  loop_control:
+    loop_var: tomcat_mirror_dist
 
 - name: install tomcat instance
   unarchive:
