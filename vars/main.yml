@@ -5,7 +5,7 @@ _tomcat_validate_certs:
   CentOS-6: no
 
 _tomcat_jmespath_packages:
-  default: 
+  default:
     - python-jmespath
   Alpine:
     - py-jmespath
