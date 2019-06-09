@@ -30,7 +30,7 @@
   set_fact:
     tomacat_github_version: "{{ item.name }}"
   with_items:
-    - "{{ tomcat_get_tags.json | json_query(tomcat_github_json_query) | first }}"
+    - "{{ tomcat_get_tags.json | to_json | from_json | json_query(tomcat_github_json_query) | first }}"
 
 - name: download tomcat source
   get_url:
