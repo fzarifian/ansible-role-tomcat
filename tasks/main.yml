@@ -1,5 +1,12 @@
 ---
 # tasks file for tomcat
+- name: get tags from github
+  uri:
+    url: https://api.github.com/repos/apache/tomcat/tags?per_page=500
+  register: tomcat_get_tags
+  until: tomcat_get_tags is succeeded
+  retries: 3
+
 - name: loop over tomcat_instances
   include: instance.yml
   with_items: "{{ tomcat_instances }}"

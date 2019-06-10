@@ -19,14 +19,7 @@
     owner: "{{ instance.user | default(tomcat_user) }}"
     group: "{{ instance.group | default(tomcat_group) }}"
 
-- name: get tags from github
-  uri:
-    url: https://api.github.com/repos/apache/tomcat/tags?per_page=500
-  register: tomcat_get_tags
-  until: tomcat_get_tags is succeeded
-  retries: 3
-
-- name: pick most recent tag
+- name: "pick most recent tag for {{ instance.version | default(tomcat_version) }}"
   set_fact:
     tomcat_github_version: "{{ item.name }}"
   with_items:
