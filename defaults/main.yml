@@ -5,6 +5,7 @@
 tomcat_mirror: "https://www-eu.apache.org"
 
 # Some "sane" defaults.
+# Tomcat version is defined from github api with starts_with jmespath expression.
 tomcat_name: tomcat
 tomcat_directory: /opt
 tomcat_version: 8

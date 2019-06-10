@@ -4,6 +4,6 @@ _tomcat_validate_certs:
   default: yes
   CentOS-6: no
 
-tomcat_github_json_query: "[?starts_with(name, '{{ instance.version | default(tomcat_version) }}.') && !contains(name, '-')]"
+tomcat_github_json_query: "[?starts_with(name, '{{ instance.version | default(tomcat_version) }}') && !contains(name, '-')]"
 
 tomcat_validate_certs: "{{ _tomcat_validate_certs[ansible_distribution ~ '-' ~ ansible_distribution_major_version] | default(_tomcat_validate_certs['default']) }}"

@@ -97,15 +97,11 @@ These variables are set in `defaults/main.yml`:
 ---
 # defaults file for tomcat
 
-# The explicit version to use when referring to the short name.
-tomcat_version7: 7.0.94
-tomcat_version8: 8.5.40
-tomcat_version9: 9.0.19
-
 # The location where to download Apache Tomcat from.
 tomcat_mirror: "https://www-eu.apache.org"
 
 # Some "sane" defaults.
+# Tomcat version is defined from github api with starts_with jmespath expression.
 tomcat_name: tomcat
 tomcat_directory: /opt
 tomcat_version: 8
