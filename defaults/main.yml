@@ -1,5 +1,6 @@
 ---
 # defaults file for tomcat
+
 # The location where to download Apache Tomcat from.
 tomcat_mirror: "https://www-eu.apache.org"
 tomcat_archive_mirror: "https://www-eu.apache.org"

@@ -98,9 +98,9 @@ These variables are set in `defaults/main.yml`:
 # defaults file for tomcat
 
 # The explicit version to use when referring to the short name.
-tomcat_version7: 7.0.94
-tomcat_version8: 8.5.41
-tomcat_version9: 9.0.20
+tomcat_version7: 7.0.96
+tomcat_version8: 8.5.43
+tomcat_version9: 9.0.24
 
 # The location where to download Apache Tomcat from.
 tomcat_mirror: "https://www-eu.apache.org"
@@ -192,6 +192,17 @@ This role has been tested against the following distributions and Ansible versio
 |ubuntu-rolling|yes|yes|yes*|
 
 A single star means the build may fail, it's marked as an experimental build.
+
+
+Included version(s)
+-------------------
+
+This role [refers to a version](https://github.com/robertdebock/ansible-role-tomcat/blob/master/defaults/main.yml) released by Apache Tomcat. Check the released version(s) here:
+- [Tomcat version 7](https://tomcat.apache.org/download-70.cgi).
+- [Tomcat version 8](https://tomcat.apache.org/download-80.cgi).
+- [Tomcat version 9](https://tomcat.apache.org/download-90.cgi).
+
+This version reference means a role may get outdated. Monthly tests occur to see if [bit-rot](https://en.wikipedia.org/wiki/Software_rot) occured. If you however find a problem, please create an issue, I'll get on it as soon as possible.
 
 Testing
 -------
