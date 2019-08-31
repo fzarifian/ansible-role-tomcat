@@ -1,0 +1,47 @@
+---
+- name: pick distribution from apache projects
+  set_fact:
+    tomcat_distribution:
+      major_version: "{{ dist.version | default(tomcat_version) }}"
+      description: "{{ item.name }}"
+      found_version: "{{ item.revision }}"
+      targz: "apache-tomcat-{{ item.revision }}.tar.gz"
+      url_path: "dist/tomcat/tomcat-{{ dist.version | default(tomcat_version) }}/v{{ item.revision }}/bin"
+  with_items: "{{ tomcat_latest_releases }}"
+  when:
+    - item.name == tomcat_apache_projects_version_mapping[ instance.version | default(tomcat_version) ]
+
+- name: ensure distribution directory exists
+  file:
+    path: "{{ tomcat_dists_directory }}/{{ tomcat_distribution.found_version }}"
+    state: directory
+  register: tomcat_distribution_exists
+
+- name: download tomcat distribution
+  block:
+    - name: from mirror...
+      get_url:
+        url: "{{ tomcat_mirror }}/{{ tomcat_distribution.url_path }}/{{ tomcat_distribution.targz }}"
+        dest: "{{ tomcat_dists_directory }}/{{ tomcat_distribution.found_version }}/{{ tomcat_distribution.targz }}"
+        mode: 0440
+        validate_certs: "{{ tomcat_validate_certs }}"
+  rescue:
+    - name: fallback to archive mirror...
+      get_url:
+        url: "{{ tomcat_archive_mirror }}/{{ tomcat_distribution.url_path }}/{{ tomcat_distribution.targz }}"
+        dest: "{{ tomcat_dists_directory }}/{{ tomcat_distribution.found_version }}/{{ tomcat_distribution.targz }}"
+        mode: 0440
+        validate_certs: "{{ tomcat_validate_certs }}"
+  when: tomcat_distribution_exists is changed
+
+- name: unarchive tomcat distribution
+  unarchive:
+    src: "{{ tomcat_dists_directory }}/{{ tomcat_distribution.found_version }}/{{ tomcat_distribution.targz }}"
+    dest: "{{ tomcat_dists_directory }}/{{ tomcat_distribution.found_version }}"
+    remote_src: yes
+    extra_opts: "--strip-components=1"
+    creates: "{{ tomcat_dists_directory }}/{{ tomcat_distribution.found_version }}/bin"
+    validate_certs: "{{ tomcat_validate_certs }}"
+  register: tomcat_distribution_unarchive
+  until: tomcat_distribution_unarchive is succeeded
+  retries: 3

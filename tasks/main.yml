@@ -1,8 +1,39 @@
 ---
 # tasks file for tomcat
+- name: get last tomcat releases from apache projects
+  uri:
+    url: "{{ tomcat_apache_projects_json_url }}"
+  register: tomcat_apache_project_data
+  until: tomcat_apache_project_data is succeeded
+  retries: 3
+
+- name: pick latest versions from apache projects
+  set_fact:
+    tomcat_latest_releases: "{{ tomcat_apache_project_data.json['release'] }}"
+    tomcat_required_distributions: "{{
+        tomcat_instances
+        | selectattr('version', 'defined')
+        | default({'version': tomcat_version })
+        | list | unique
+      }}"
+  when:
+    - tomcat_instances is defined
+
+- debug:
+    var: tomcat_required_distributions
+
+- name: loop over tomcat_required_distributions
+  loop: tomcat_required_distributions
+  include: dist.yml
+  loop_control:
+    loop_var: version
+    label: "get distribution {{ version }}"
+  when:
+    - tomcat_required_distributions is defined
+
 - name: loop over tomcat_instances
-  include: instance.yml
   with_items: "{{ tomcat_instances }}"
+  include: instance.yml
   loop_control:
     loop_var: instance
   when:

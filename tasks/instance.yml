@@ -1,4 +1,30 @@
+# ansible-configured
 ---
+
+
+- name: ensure distribution directory exists
+  file:
+    path: "{{ tomcat_dists_directory }}/{{ tomcat_distribution.found_version }}"
+    state: directory
+  register: tomcat_distribution_exists
+
+- name: download tomcat distribution
+  block:
+    - name: from mirror...
+      get_url:
+        url: "{{ tomcat_mirror }}/{{ tomcat_distribution.url_path }}/{{ tomcat_distribution.targz }}"
+        dest: "{{ tomcat_dists_directory }}/{{ tomcat_distribution.found_version }}/{{ tomcat_distribution.targz }}"
+        mode: 0440
+        validate_certs: "{{ tomcat_validate_certs }}"
+  rescue:
+    - name: fallback to archive mirror...
+      get_url:
+        url: "{{ tomcat_archive_mirror }}/{{ tomcat_distribution.url_path }}/{{ tomcat_distribution.targz }}"
+        dest: "{{ tomcat_dists_directory }}/{{ tomcat_distribution.found_version }}/{{ tomcat_distribution.targz }}"
+        mode: 0440
+        validate_certs: "{{ tomcat_validate_certs }}"
+  when: tomcat_distribution_exists is changed
+
 - name: ensure instance group exists
   group:
     name: "{{ instance.group | default(tomcat_group) }}"
@@ -19,16 +45,9 @@
     owner: "{{ instance.user | default(tomcat_user) }}"
     group: "{{ instance.group | default(tomcat_group) }}"
 
-- name: download tomcat source
-  get_url:
-    url: "{{ tomcat_unarchive_url }}"
-    dest: "{{ tomcat_directory }}/{{ instance.name }}/tomcat_src.tar.gz"
-    mode: 0440
-    validate_certs: "{{ tomcat_validate_certs }}"
-
 - name: install tomcat instance
   unarchive:
-    src: "{{ tomcat_directory }}/{{ instance.name }}/tomcat_src.tar.gz"
+    src: "{{ tomcat_dists_directory }}/{{ tomcat_distribution.found_version }}/{{ tomcat_distribution.targz }}"
     dest: "{{ tomcat_directory }}/{{ instance.name }}"
     owner: "{{ instance.user | default(tomcat_user) }}"
     group: "{{ instance.group | default(tomcat_group) }}"
