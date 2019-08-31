@@ -1,13 +1,18 @@
 ---
 # defaults file for tomcat
-
-# The explicit version to use when referring to the short name.
-tomcat_version7: 7.0.94
-tomcat_version8: 8.5.41
-tomcat_version9: 9.0.20
-
 # The location where to download Apache Tomcat from.
 tomcat_mirror: "https://www-eu.apache.org"
+tomcat_archive_mirror: "https://www-eu.apache.org"
+
+# apache projects configuration
+tomcat_apache_projects_json_url: https://projects.apache.org/json/projects/tomcat.json
+tomcat_apache_projects_version_mapping:
+  7: Latest Stable 7.0.x Release
+  8: Latest Stable 8.5.x Release
+  9: Latest Stable 9.0.x Release
+
+# tomcat dists directory
+tomcat_dists_directory: /usr/src/apache-tomcat
 
 # Some "sane" defaults.
 tomcat_name: tomcat
