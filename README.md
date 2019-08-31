@@ -98,9 +98,9 @@ These variables are set in `defaults/main.yml`:
 # defaults file for tomcat
 
 # The explicit version to use when referring to the short name.
-tomcat_version7: 7.0.94
-tomcat_version8: 8.5.40
-tomcat_version9: 9.0.19
+tomcat_version7: 7.0.96
+tomcat_version8: 8.5.43
+tomcat_version9: 9.0.24
 
 # The location where to download Apache Tomcat from.
 tomcat_mirror: "https://www-eu.apache.org"
@@ -149,7 +149,7 @@ Requirements
 ------------
 
 - Access to a repository containing packages, likely on the internet.
-- A recent version of Ansible. (Tests run on the last 3 release of Ansible.)
+- A recent version of Ansible. (Tests run on the current, previous and next release of Ansible.)
 
 The following roles can be installed to ensure all requirements are met, using `ansible-galaxy install -r requirements.yml`:
 
@@ -182,7 +182,6 @@ This role has been tested against the following distributions and Ansible versio
 |archlinux|yes|yes|yes*|
 |centos-6|yes|yes|yes*|
 |centos-latest|yes|yes|yes*|
-|debian-latest|yes|yes|yes*|
 |debian-stable|yes|yes|yes*|
 |debian-unstable*|yes|yes|yes*|
 |fedora-latest|yes|yes|yes*|
@@ -193,6 +192,17 @@ This role has been tested against the following distributions and Ansible versio
 |ubuntu-rolling|yes|yes|yes*|
 
 A single star means the build may fail, it's marked as an experimental build.
+
+
+Included version(s)
+-------------------
+
+This role [refers to a version](https://github.com/robertdebock/ansible-role-tomcat/blob/master/defaults/main.yml) released by Apache Tomcat. Check the released version(s) here:
+- [Tomcat version 7](https://tomcat.apache.org/download-70.cgi).
+- [Tomcat version 8](https://tomcat.apache.org/download-80.cgi).
+- [Tomcat version 9](https://tomcat.apache.org/download-90.cgi).
+
+This version reference means a role may get outdated. Monthly tests occur to see if [bit-rot](https://en.wikipedia.org/wiki/Software_rot) occured. If you however find a problem, please create an issue, I'll get on it as soon as possible.
 
 Testing
 -------
@@ -207,19 +217,9 @@ pip install molecule
 molecule test
 ```
 
-To test on Amazon EC2, configure [~/.aws/credentials](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html) and `export AWS_REGION=eu-central-1` before running `molecule test --scenario-name ec2`.
+To test on Amazon EC2, configure [~/.aws/credentials](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html) and set a region using `export AWS_REGION=eu-central-1` before running `molecule test --scenario-name ec2`.
 
 There are many specific scenarios available, please have a look in the `molecule/` directory.
-
-Run the [ansible-galaxy](https://github.com/ansible/galaxy-lint-rules) and [my](https://github.com/robertdebock/ansible-lint-rules) lint rules if you want your change to be merges:
-
-```shell
-git clone https://github.com/ansible/ansible-lint.git /tmp/ansible-lint
-ansible-lint -r /tmp/ansible-lint/lib/ansiblelint/rules .
-
-git clone https://github.com/robertdebock/ansible-lint /tmp/my-ansible-lint
-ansible-lint -r /tmp/my-ansible-lint/rules .
-```
 
 License
 -------
@@ -230,4 +230,4 @@ Apache-2.0
 Author Information
 ------------------
 
-Robert de Bock
+[Robert de Bock](https://robertdebock.nl/)
